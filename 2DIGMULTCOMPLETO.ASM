@@ -10,19 +10,19 @@
 ;Definiendo datos
 SEG_DAT:
         MOV     AX,@DATA
-        MOV     DS,AX
+        MOV     DS,AX     ;registro de segmento de datos
         RET
 
 
 ;Mostrar mensaje
 VIS_MENSAJE:
-        MOV     AH,09H
+        MOV     AH,09H     ;mostrar el mensaje
         INT     21H
         RET
 
 ;Ingresar el numero
 INGRESO:
-        MOV     AH,01H
+        MOV     AH,01H       ;entrada de caracter con salida
         INT     21H
         RET
   
@@ -34,8 +34,8 @@ INGRESODIG:
 	XOR	BX,BX
 	MOV	AH,01H
 	INT	21H 
-	CMP AL, 30H
-	JB  VERIFICAR
+	CMP AL, 30H           ;se compara si los numeros ingresados a operar
+	JB  VERIFICAR         ;esta entre 0 y 9
 	CMP AL, 39H
 	JA  VERIFICAR             
 	             
@@ -52,11 +52,11 @@ SALIR:  MOV     AH,4CH
 
 ;**********************************************************
 BINASCII:       
-	LEA     SI,ASCVAL
+	LEA     SI,ASCVAL        ;puntero de indice
         MOV     CX,5
         MOV     AL,00H
 C10:    MOV     [SI],AL
-        INC     SI
+        INC     SI            ;incrementa el puntero
         LOOP    C10
         MOV     CX,10
         LEA     SI,ASCVAL+4
@@ -97,7 +97,7 @@ MULTIPLI:  ;MULTIPLICAR
 	
 
 SUM: ; SUMAR
-	 XOR AX,AX
+	 XOR AX,AX        ;reset de AH y AL
 	 MOV AL,N1
 	 ADD AL,N2
 	 MOV SUMA, AL
@@ -117,7 +117,7 @@ RESTT:
 	;RESTA 
 	
 	
-	 XOR AX,AX
+	 XOR AX,AX          ;reset de AH y AL
 	 MOV  AL, N1
   
        
@@ -139,7 +139,7 @@ RESTT:
 DIVISIN:   
 ;DIVISION
     
-     XOR AX,AX ; LIMPIAR
+     XOR AX,AX          ;reset de AH y AL
         
      MOV BL,N2
      MOV AL,N1
@@ -173,7 +173,7 @@ CICLOING:			;se muestran las instrucciones del programa
  
 VERIFICAR: CALL MULTI 		
 
-MULTI: 
+MULTI:                  ;ciclo que se repite hasta salir
   
     MOV     DX,OFFSET MN1	;Se ingresa el primer numero
 	CALL    VIS_MENSAJE
@@ -206,15 +206,15 @@ MET_MENU:
 	CALL INGRESO 
 	
 	CMP AL, 31H
-	JB  AVISO
+	JB  AVISO           ;comparar si es menor de 1
 	CMP AL, 36H
-	JA  AVISO 
+	JA  AVISO           ;comparar si es mayor de 6
 	
 	
 	
     
     CMP AL,31H
-    JE  MULTIPLI
+    JE  MULTIPLI        ;JE compara el num ingresado si es igual
     
        
 	CMP AL,32H
