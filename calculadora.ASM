@@ -29,7 +29,8 @@ INGRESO:
   
  
   
-;**********Funcion para obtener digito ********************
+;Funcion para obtener digito
+
 INGRESODIG:
 	XOR	BX,BX
 	MOV	AH,01H
@@ -45,12 +46,12 @@ INGRESODIG:
 	
 	RET
 
-;**********************************************************
+;funcion para salir
 SALIR:  MOV     AH,4CH
         INT     21H
 	RET
 
-;**********************************************************
+;funcion para verificar si es ascii
 BINASCII:       
 	LEA     SI,ASCVAL        ;puntero de indice
         MOV     CX,5
@@ -73,10 +74,10 @@ C30:    OR      AL,30H
         MOV     [SI],AL
         RET                    
    
-;**********************************************************
+;Funciones de operaciones
 
-	
-MULTIPLI:  ;MULTIPLICAR
+;multiplicacion
+MULTIPLI:
     
     XOR AX,AX
     MOV AH,0
@@ -95,9 +96,9 @@ MULTIPLI:  ;MULTIPLICAR
 	
 	
 	
-
-SUM: ; SUMAR
-	 XOR AX,AX        ;reset de AH y AL
+;suma
+SUM: 
+	 XOR AX,AX        ;limpia el registro
 	 MOV AL,N1
 	 ADD AL,N2
 	 MOV SUMA, AL
@@ -113,11 +114,12 @@ SUM: ; SUMAR
 	CALL MET_MENU
 	 
 	
+;resta
 RESTT:   
-	;RESTA 
 	
 	
-	 XOR AX,AX          ;reset de AH y AL
+	
+	 XOR AX,AX         
 	 MOV  AL, N1
   
        
@@ -136,10 +138,10 @@ RESTT:
 	CALL MET_MENU
 	   
 	
+;division
 DIVISIN:   
-;DIVISION
     
-     XOR AX,AX          ;reset de AH y AL
+     XOR AX,AX        
         
      MOV BL,N2
      MOV AL,N1
@@ -160,7 +162,7 @@ DIVISIN:
    
    
    
-;*********** MAIN *************************
+;programa inicial
 MAIN:   CALL    SEG_DAT ;Se llama el segmento de datos
 
     
@@ -272,7 +274,7 @@ MSALIR  DB      10,10,13,'DIGITE <S> PARA SALIR: $'
 ASCVAL  DB      5 DUP(00H),'$'
 BINVAL  DW      0000
        
-       .STACK   ;DEFINIR SEGMENTO DE PILA
+       .STACK   ;SEGMENTO DE PILA
                
                
                
