@@ -1,4 +1,4 @@
-;PROGRAMA PARA MULTIPLICAR DOS NUMEROS DE DOS DIGITOS
+;PROGRAMA PARA HACER OPERACIONES BASICAS CON DOS NUMEROS DE UN DIGITO
 
 
         .MODEL  SMALL
@@ -29,8 +29,7 @@ INGRESO:
   
  
   
-;Funcion para obtener digito
-
+;Funcion para obtener digito 
 INGRESODIG:
 	XOR	BX,BX
 	MOV	AH,01H
@@ -46,12 +45,12 @@ INGRESODIG:
 	
 	RET
 
-;funcion para salir
+;Funcion para salir
 SALIR:  MOV     AH,4CH
         INT     21H
 	RET
 
-;funcion para verificar si es ascii
+;Funcion para verificar ASCII
 BINASCII:       
 	LEA     SI,ASCVAL        ;puntero de indice
         MOV     CX,5
@@ -74,10 +73,47 @@ C30:    OR      AL,30H
         MOV     [SI],AL
         RET                    
    
-;Funciones de operaciones
+;Funciones de las operaciones	
+   
+SUMA: ; SUMAR
+	 XOR AX,AX        ;reset de AH y AL
+	 MOV AL,N1
+	 ADD AL,N2
+	 
+	 MOV	    BINVAL,AX
+	CALL	BINASCII
+	
+	
+	MOV	DX,OFFSET MRES2
+	CALL    VIS_MENSAJE
+	MOV	DX,OFFSET ASCVAL
+	CALL    VIS_MENSAJE  
+	CALL MET_MENU
+	 
+	
+RESTA:   
+	;RESTA 
+	
+	
+	 XOR AX,AX          ;reset de AH y AL
+	 MOV  AL, N1
+  
+       
+        SUB  AL,N2
+       
+       
+    MOV	    BINVAL,AX
+	CALL	BINASCII
+	
+	
+	MOV	DX,OFFSET MRES3
+	CALL    VIS_MENSAJE
+	MOV	DX,OFFSET ASCVAL
+	CALL    VIS_MENSAJE  
+	CALL MET_MENU                 
 
-;multiplicacion
-MULTIPLI:
+	
+MULTIPLICACION:  ;MULTIPLICAR
     
     XOR AX,AX
     MOV AH,0
@@ -93,60 +129,14 @@ MULTIPLI:
 	CALL    VIS_MENSAJE
 	CALL MET_MENU 
 	
-	
-	
-	
-;suma
-SUM: 
-	 XOR AX,AX        ;limpia el registro
-	 MOV AL,N1
-	 ADD AL,N2
-	 MOV SUMA, AL
-	 
-	 MOV	    BINVAL,AX
-	CALL	BINASCII
-	
-	
-	MOV	DX,OFFSET MRES2
-	CALL    VIS_MENSAJE
-	MOV	DX,OFFSET ASCVAL
-	CALL    VIS_MENSAJE  
-	CALL MET_MENU
-	 
-	
-;resta
-RESTT:   
-	
-	
-	
-	 XOR AX,AX         
-	 MOV  AL, N1
-  
-       
-        SUB  AL,N2
-        MOV  RESTA,AL
-       
-       
-    MOV	    BINVAL,AX
-	CALL	BINASCII
-	
-	
-	MOV	DX,OFFSET MRES3
-	CALL    VIS_MENSAJE
-	MOV	DX,OFFSET ASCVAL
-	CALL    VIS_MENSAJE  
-	CALL MET_MENU
-	   
-	
-;division
-DIVISIN:   
+DIVISION:   
+;DIVISION
     
-     XOR AX,AX        
+     XOR AX,AX          ;reset de AH y AL
         
      MOV BL,N2
      MOV AL,N1
-     DIV BL
-     MOV DIVISN,AL   
+     DIV BL          
          
          
     MOV	    BINVAL,AX
@@ -162,7 +152,7 @@ DIVISIN:
    
    
    
-;programa inicial
+;Programa inicial
 MAIN:   CALL    SEG_DAT ;Se llama el segmento de datos
 
     
@@ -170,6 +160,9 @@ MAIN:   CALL    SEG_DAT ;Se llama el segmento de datos
    
 	
 CICLOING:			;se muestran las instrucciones del programa
+    MOV     DX,OFFSET MNOM
+    CALL    VIS_MENSAJE
+    
     MOV     DX,OFFSET MMEN 
 	CALL    VIS_MENSAJE   
  
@@ -192,7 +185,7 @@ MULTI:                  ;ciclo que se repite hasta salir
 	MOV	N2,BL            
 	
 	CALL MET_MENU
-;*********************
+;--------------------------------------------------
 
 AVISO:
     MOV     DX,OFFSET MSN_AVISO
@@ -216,20 +209,20 @@ MET_MENU:
 	
     
     CMP AL,31H
-    JE  MULTIPLI        ;JE compara el num ingresado si es igual
+    JE  SUMA        ;JE compara el num ingresado si es igual
     
        
 	CMP AL,32H
-	JE  SUM        
+	JE  RESTA        
 	
 	
 	CMP AL,33H
-	JE  RESTT  
+	JE  MULTIPLICACION  
 	
 	
 	
 	CMP AL,34H
-	JE  DIVISIN 
+	JE  DIVISION 
 	
 	CMP AL, 35H
 	JE  VERIFICAR
@@ -241,7 +234,7 @@ MET_MENU:
     
 
 	
-;************************************
+;----------------------------------------------------
         MOV	DX,OFFSET MSALIR
         CALL    VIS_MENSAJE
         CALL    INGRESO
@@ -252,22 +245,16 @@ MET_MENU:
                 
         .DATA           ;Definiendo datos
 N1      DB      ?
-N2      DB      ?
-RES     DW      ? 
-SUMA    DB      ?
-RESTA   DB      ?
-DIVISN  DB      ?
-MODULO  DB      ?
-UNI     DB      ?
-DECE    DB      ?
-MMEN    DB      10,10,13,'PROGRAMA PARA MULTIPLICAR NUMEROS DE DOS DIGITOS $'
-MN1     DB      10,10,13,'INGRESAR NUMERO 1 (DOS DIGITOS): $'
-MN2     DB      10,13,'INGRESAR NUMERO 2 (DOS DIGITOS): $'
-MRES    DB      10,10,13,'Multiplicacion: $'    
-MRES2   DB      10,10,13,'Suma: $'
-MRES3   DB      10,10,13,'Resta: $'
+N2      DB      ? 
+MNOM    DB      10,13,'ANDRES GRANDA PIEDRAHITA - SANTIAGO ORDONNEZ $'
+MMEN    DB      10,10,13,'CALCULADORA DE 1 DIGITO $'
+MN1     DB      10,10,13,'INGRESAR NUMERO 1: $'
+MN2     DB      10,13,'INGRESAR NUMERO 2: $'
+MRES    DB      10,10,13,'Suma: $'    
+MRES2   DB      10,10,13,'Resta: $'
+MRES3   DB      10,10,13,'Multiplicacion: $'
 MRES4   DB      10,10,13,'Division: $'
-MENU    DB      10,10,13,'1-MULTIPLICACION 2-SUMA 3-RESTA 4-DIVISION 5-INGRESAR NUMEROS NUEVOS 6-SALIR: $'  
+MENU    DB      10,10,13,'SELECCIONAR UNA OPCION:',10,13,'(1)SUMA',10,13,'(2)RESTA',10,13,'(3)MULTIPLICACION',10,13,'(4)DIVISION',10,13,'(5)INGRESAR NUMEROS NUEVOS',10,13,'(6)SALIR',10,13,'-> $'  
 MSN_AVISO   DB      10,10,13, 'Numero incorrecto $'
 
 MSALIR  DB      10,10,13,'DIGITE <S> PARA SALIR: $'
