@@ -13,37 +13,11 @@ SEG_DAT:
         MOV     DS,AX     ;registro de segmento de datos
         RET
 
-
-;Mostrar mensaje
-VIS_MENSAJE:
-        MOV     AH,09H     ;mostrar el mensaje
-        INT     21H
-        RET
-
 ;Ingresar el numero
 INGRESO:
         MOV     AH,01H       ;entrada de caracter con salida
         INT     21H
         RET
-  
-  
- 
-  
-;Funcion para obtener digito 
-INGRESODIG:
-	XOR	BX,BX
-	MOV	AH,01H
-	INT	21H 
-	CMP AL, 30H           ;se compara si los numeros ingresados a operar
-	JB  VERIFICAR         ;esta entre 0 y 9
-	CMP AL, 39H
-	JA  VERIFICAR             
-	             
-	  AND	AL,0FH
-	
-	ADD	BL,AL
-	
-	RET
 
 ;Funcion para salir
 SALIR:  MOV     AH,4CH
@@ -84,10 +58,12 @@ SUMA: ; SUMAR
 	CALL	BINASCII
 	
 	
-	MOV	DX,OFFSET MRES2
-	CALL    VIS_MENSAJE
+	MOV	DX,OFFSET MRES
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	MOV	DX,OFFSET ASCVAL
-	CALL    VIS_MENSAJE  
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	CALL MET_MENU
 	 
 	
@@ -106,10 +82,12 @@ RESTA:
 	CALL	BINASCII
 	
 	
-	MOV	DX,OFFSET MRES3
-	CALL    VIS_MENSAJE
+	MOV	DX,OFFSET MRES2
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	MOV	DX,OFFSET ASCVAL
-	CALL    VIS_MENSAJE  
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	CALL MET_MENU                 
 
 	
@@ -123,10 +101,12 @@ MULTIPLICACION:  ;MULTIPLICAR
     	MOV	    BINVAL,AX
 	CALL	BINASCII 
 
-	MOV	DX,OFFSET MRES
-	CALL    VIS_MENSAJE
+	MOV	DX,OFFSET MRES3
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	MOV	DX,OFFSET ASCVAL
-	CALL    VIS_MENSAJE
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	CALL MET_MENU 
 	
 DIVISION:   
@@ -144,9 +124,11 @@ DIVISION:
 	
 	
 	MOV	DX,OFFSET MRES4
-	CALL    VIS_MENSAJE
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	MOV	DX,OFFSET ASCVAL
-	CALL    VIS_MENSAJE
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	CALL MET_MENU    
    
    
@@ -161,25 +143,49 @@ MAIN:   CALL    SEG_DAT ;Se llama el segmento de datos
 	
 CICLOING:			;se muestran las instrucciones del programa
     MOV     DX,OFFSET MNOM
-    CALL    VIS_MENSAJE
+    MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
     
     MOV     DX,OFFSET MMEN 
-	CALL    VIS_MENSAJE   
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H   
  
 VERIFICAR: CALL MULTI 		
 
 MULTI:                  ;ciclo que se repite hasta salir
   
     MOV     DX,OFFSET MN1	;Se ingresa el primer numero
-	CALL    VIS_MENSAJE
-    CALL    INGRESODIG                                           
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
+    XOR	BX,BX
+	MOV	AH,01H
+	INT	21H 
+	CMP AL, 30H           ;se compara si los numeros ingresados a operar
+	JB  VERIFICAR         ;esta entre 0 y 9
+	CMP AL, 39H
+	JA  VERIFICAR             
+	             
+	AND	AL,0FH
+	
+	ADD	BL,AL                                           
                                               
     
 	MOV	N1,BL		;Se ingresa el segundo numero
 
     MOV	DX,OFFSET MN2
-	CALL    VIS_MENSAJE
-    CALL    INGRESODIG
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
+    XOR	BX,BX
+	MOV	AH,01H
+	INT	21H 
+	CMP AL, 30H           ;se compara si los numeros ingresados a operar
+	JB  VERIFICAR         ;esta entre 0 y 9
+	CMP AL, 39H
+	JA  VERIFICAR             
+	             
+	AND	AL,0FH
+	
+	ADD	BL,AL
    
         
 	MOV	N2,BL            
@@ -189,14 +195,16 @@ MULTI:                  ;ciclo que se repite hasta salir
 
 AVISO:
     MOV     DX,OFFSET MSN_AVISO
-    CALL    VIS_MENSAJE
+    MOV     AH,09H     ;mostrar el mensaje
+    INT     21H
 	CALL    MET_MENU
 
 
 MET_MENU:	
 	
     MOV     DX,OFFSET MENU
-	CALL    VIS_MENSAJE  
+	MOV     AH,09H     ;mostrar el mensaje
+    INT     21H  
 	
 	CALL INGRESO 
 	
@@ -236,7 +244,8 @@ MET_MENU:
 	
 ;----------------------------------------------------
         MOV	DX,OFFSET MSALIR
-        CALL    VIS_MENSAJE
+        MOV     AH,09H     ;mostrar el mensaje
+        INT     21H
         CALL    INGRESO
         CMP     AL,'S'
         JE      SALIR
